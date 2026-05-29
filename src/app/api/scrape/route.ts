@@ -14,6 +14,17 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const result = await runStockCheckCycle();
-  return NextResponse.json(result);
+  try {
+    const result = await runStockCheckCycle();
+    return NextResponse.json(result);
+  } catch (error) {
+    console.error("Stock scrape failed", error);
+    return NextResponse.json(
+      {
+        error: "Stock scrape failed",
+        detail: error instanceof Error ? error.message : "Unknown error",
+      },
+      { status: 500 },
+    );
+  }
 }

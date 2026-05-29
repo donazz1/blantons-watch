@@ -17,10 +17,20 @@ export async function runStockCheckCycle() {
   const newHits: string[] = [];
 
   for (const store of stores) {
-    const result = await checkStoreStock({
-      slug: store.slug,
-      url: store.url,
-    });
+    let result;
+
+    try {
+      result = await checkStoreStock({
+        slug: store.slug,
+        url: store.url,
+      });
+    } catch (error) {
+      console.error(`Stock check failed for ${store.slug}`, error);
+      result = {
+        status: "ERROR" as const,
+        detail: error instanceof Error ? error.message : "Unexpected scraper error",
+      };
+    }
 
     await prisma.stockCheck.create({
       data: {
