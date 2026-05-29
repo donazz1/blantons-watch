@@ -1,0 +1,96 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum StockStatus {
+  IN_STOCK
+  OUT_OF_STOCK
+  UNKNOWN
+  ERROR
+}
+
+enum HitOutcomeType {
+  PURCHASED
+  NOT_AVAILABLE
+  IN_STOCK_NOT_PURCHASED
+}
+
+model User {
+  id           String    @id @default(cuid())
+  fullName     String
+  phone        String
+  email        String?
+  photoUrl     String?
+  passwordHash String?
+  disabledAt   DateTime?
+  lastLoginAt  DateTime?
+  accessToken  String    @unique @default(cuid())
+  isAdmin      Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  outcomes     HitOutcome[]
+
+  @@index([email])
+}
+
+model MonitorStore {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  productName String
+  url         String
+  region      String
+  enabled     Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  checks      StockCheck[]
+  hits        Hit[]
+}
+
+model StockCheck {
+  id        String      @id @default(cuid())
+  storeId   String
+  store     MonitorStore @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  status    StockStatus
+  detail    String?
+  checkedAt DateTime    @default(now())
+
+  @@index([storeId, checkedAt])
+}
+
+model Hit {
+  id          String    @id @default(cuid())
+  storeId     String
+  store       MonitorStore @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  productName String
+  detectedAt  DateTime  @default(now())
+  resolvedAt  DateTime?
+  notifiedAt  DateTime?
+  outcomes    HitOutcome[]
+
+  @@index([detectedAt])
+}
+
+model HitOutcome {
+  id        String         @id @default(cuid())
+  hitId     String
+  hit       Hit            @relation(fields: [hitId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  outcome   HitOutcomeType
+  createdAt DateTime       @default(now())
+
+  @@unique([hitId, userId])
+}
+
+model AlertLog {
+  id        String   @id @default(cuid())
+  hitId     String?
+  message   String
+  channel   String
+  createdAt DateTime @default(now())
+}

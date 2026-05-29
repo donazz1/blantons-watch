@@ -1,0 +1,18 @@
+{
+  "name": "Blanton's Watch",
+  "short_name": "Blanton's Watch",
+  "description": "Track Blanton's bourbon stock across Canadian liquor stores",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#020617",
+  "theme_color": "#020617",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icon",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

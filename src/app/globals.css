@@ -1,8 +1,12 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #020617;
+  --foreground: #f8fafc;
+  --amber-wax: #d97706;
+  --amber-glow: #fbbf24;
+  --bourbon-deep: #1c0a00;
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -12,15 +16,57 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background-image:
+    radial-gradient(circle at 12% 0%, rgb(217 119 6 / 22%), transparent 42%),
+    radial-gradient(circle at 88% 8%, rgb(180 83 9 / 14%), transparent 38%),
+    radial-gradient(circle at 50% 100%, rgb(15 23 42 / 90%), transparent 55%);
+}
+
+.blanton-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgb(245 158 11 / 8%) 0%,
+    transparent 50%
+  );
+  pointer-events: none;
+}
+
+.app-header {
+  padding-top: max(0.9rem, env(safe-area-inset-top));
+}
+
+.app-main {
+  padding-top: 0.75rem;
+}
+
+.mobile-bottom-bar {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.store-card button:focus-visible,
+.mobile-bottom-bar button:focus-visible,
+[role="tab"]:focus-visible {
+  outline: 2px solid rgb(251 191 36 / 0.8);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .store-card,
+  .store-card button,
+  [role="tab"] {
+    transition: none;
+  }
 }
