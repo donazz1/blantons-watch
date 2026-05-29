@@ -5,9 +5,14 @@ import { AdminUserForm } from "@/components/AdminUserForm";
 import { AppHeader } from "@/components/AppHeader";
 import { LogoutButton } from "@/components/LogoutButton";
 import { RunScrapeButton } from "@/components/RunScrapeButton";
+import { ScrapeScheduleControl } from "@/components/ScrapeScheduleControl";
 import { isAdminAuthenticated } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { getAppBaseUrl } from "@/lib/local-url";
+import {
+  getScrapeScheduleState,
+  SCRAPE_SCHEDULE_OPTIONS,
+} from "@/lib/scrape-schedule";
 import { ensureAdminUser } from "@/lib/seed";
 
 export const dynamic = "force-dynamic";
@@ -24,6 +29,7 @@ export default async function AdminPage() {
 
   const loginUrl = `${getAppBaseUrl()}/login`;
   const adminPassword = process.env.ADMIN_PASSWORD ?? "blantons-admin";
+  const scrapeSchedule = await getScrapeScheduleState();
 
   const friends = users.map((user) => ({
     id: user.id,
@@ -59,7 +65,11 @@ export default async function AdminPage() {
           </Link>
         </div>
 
-        <div className="mt-6">
+        <div className="mt-6 grid gap-4">
+          <ScrapeScheduleControl
+            initialState={scrapeSchedule}
+            options={[...SCRAPE_SCHEDULE_OPTIONS]}
+          />
           <RunScrapeButton />
         </div>
 

@@ -9,7 +9,7 @@ const handler = async () => {
     return new Response("Missing config", { status: 500 });
   }
 
-  const res = await fetch(`${siteUrl}/api/scrape`, {
+  const res = await fetch(`${siteUrl}/api/scrape?scheduled=1`, {
     method: "POST",
     headers: { Authorization: `Bearer ${cronSecret}` },
   });
@@ -22,5 +22,5 @@ const handler = async () => {
 export default handler;
 
 export const config: Config = {
-  schedule: "0 */2 * * *",
+  schedule: "*/30 * * * *",
 };
