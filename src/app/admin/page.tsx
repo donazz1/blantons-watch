@@ -3,6 +3,7 @@ import Link from "next/link";
 import { AdminFriendList } from "@/components/AdminFriendList";
 import { AdminUserForm } from "@/components/AdminUserForm";
 import { AppHeader } from "@/components/AppHeader";
+import { CollapsibleAdminSection } from "@/components/CollapsibleAdminSection";
 import { LogoutButton } from "@/components/LogoutButton";
 import { RunScrapeButton } from "@/components/RunScrapeButton";
 import { ScrapeScheduleControl } from "@/components/ScrapeScheduleControl";
@@ -66,20 +67,32 @@ export default async function AdminPage() {
         </div>
 
         <div className="mt-6 grid gap-4">
-          <ScrapeScheduleControl
-            initialState={scrapeSchedule}
-            options={[...SCRAPE_SCHEDULE_OPTIONS]}
-          />
+          <CollapsibleAdminSection
+            title="Scheduled stock checks"
+            subtitle="Controls automatic Netlify scrapes. Manual checks still run anytime."
+          >
+            <ScrapeScheduleControl
+              initialState={scrapeSchedule}
+              options={[...SCRAPE_SCHEDULE_OPTIONS]}
+            />
+          </CollapsibleAdminSection>
           <RunScrapeButton />
         </div>
 
         <div className="mt-8 grid gap-6 md:grid-cols-2">
-          <AdminUserForm loginUrl={loginUrl} />
-          <AdminFriendList
-            profiles={friends}
-            loginUrl={loginUrl}
-            adminPassword={adminPassword}
-          />
+          <CollapsibleAdminSection title="Add a friend">
+            <AdminUserForm loginUrl={loginUrl} />
+          </CollapsibleAdminSection>
+          <CollapsibleAdminSection
+            title={`Profiles (${friends.length})`}
+            defaultOpen
+          >
+            <AdminFriendList
+              profiles={friends}
+              loginUrl={loginUrl}
+              adminPassword={adminPassword}
+            />
+          </CollapsibleAdminSection>
         </div>
 
         <LogoutButton />

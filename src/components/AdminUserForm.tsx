@@ -73,9 +73,8 @@ export function AdminUserForm({ loginUrl }: { loginUrl: string }) {
   return (
     <form
       onSubmit={onSubmit}
-      className="space-y-3 rounded-3xl border border-white/10 bg-white/[0.06] p-4 shadow-2xl shadow-black/30 backdrop-blur"
+      className="space-y-3"
     >
-      <h2 className="font-bold text-white">Add a friend</h2>
       <input
         required
         placeholder="Full name"

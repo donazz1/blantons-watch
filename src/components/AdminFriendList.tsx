@@ -137,8 +137,7 @@ export function AdminFriendList({ profiles, loginUrl, adminPassword }: Props) {
   }
 
   return (
-    <section>
-      <h2 className="mb-3 font-bold text-white">Profiles ({profiles.length})</h2>
+    <>
       <p className="mb-3 text-xs text-slate-400">
         Share login link:{" "}
         <span className="break-all font-mono text-amber-300">{loginUrl}</span>
@@ -326,6 +325,6 @@ export function AdminFriendList({ profiles, loginUrl, adminPassword }: Props) {
           <p className="text-sm text-slate-400">No profiles added yet.</p>
         ) : null}
       </ul>
-    </section>
+    </>
   );
 }
